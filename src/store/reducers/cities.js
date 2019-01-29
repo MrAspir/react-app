@@ -1,3 +1,5 @@
+import { CITY_REMOVE } from '../actions/CitiesPage/types';
+
 const initialState = [{
     id: 1,
     name: 'Tirana'
@@ -150,11 +152,13 @@ const initialState = [{
     name: 'London'
 }, {
     id: 51,
-    name: 'Vatican name'
+    name: 'Vatican City'
 }];
 
 const cities = (state = initialState, action) => {
     switch (action.type) {
+        case CITY_REMOVE:
+            return state.filter(city => city.id !== action.id);
         default:
             return state;
     }

@@ -8,11 +8,16 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import * as serviceWorker from './serviceWorker';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+
 import './index.scss';
 
 import reducer from './store';
 
 import App from './components/App';
+
+library.add(faTrashAlt);
 
 const store = createStore(
     reducer,

@@ -1,3 +1,7 @@
 .cities {
     @extend .col-12;
+
+    &__name {
+        width: 100%;
+    }
 }
