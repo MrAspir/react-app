@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { removeCity } from '../../store/actions/CitiesPage/CitiesList';
+import { removeCity, getWeather } from '../../store/actions/CitiesPage/CitiesList';
 
 import CitiesList from '../../components/CitiesPage/CitiesList';
 
@@ -13,7 +13,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onRemoveCity: (id) => {
-            dispatch(removeCity(id))
+            dispatch(removeCity(id));
+        },
+        onLoadWeather: (data) => {
+            dispatch(getWeather(data));
         }
     }
 };

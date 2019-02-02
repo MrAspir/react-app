@@ -1,164 +1,145 @@
-import { CITY_REMOVE } from '../actions/CitiesPage/types';
+import Immutable from 'seamless-immutable';
 
-const initialState = [{
-    id: 1,
-    name: 'Tirana'
-}, {
-    id: 2,
-    name: 'Andorra la Vella'
-}, {
-    id: 3,
-    name: 'Yerevan'
-}, {
-    id: 4,
-    name: 'Vienna'
-}, {
-    id: 5,
-    name: 'Baku'
-}, {
-    id: 6,
-    name: 'Minsk'
-}, {
-    id: 7,
-    name: 'Brussels'
-}, {
-    id: 8,
-    name: 'Sarajevo'
-}, {
-    id: 9,
-    name: 'Sofia'
-}, {
-    id: 10,
-    name: 'Zagreb'
-}, {
-    id: 11,
-    name: 'Nicosia'
-}, {
-    id: 12,
-    name: 'Prague'
-}, {
-    id: 13,
-    name: 'Copenhagen'
-}, {
-    id: 14,
-    name: 'Tallinn'
-}, {
-    id: 15,
-    name: 'Helsinki'
-}, {
-    id: 16,
-    name: 'Paris'
-}, {
-    id: 17,
-    name: 'Tbilisi'
-}, {
-    id: 18,
-    name: 'Berlin'
-}, {
-    id: 19,
-    name: 'Athens'
-}, {
-    id: 20,
-    name: 'Budapest'
-}, {
-    id: 21,
-    name: 'Reykjavik'
-}, {
-    id: 22,
-    name: 'Dublin'
-}, {
-    id: 23,
-    name: 'Rome'
-}, {
-    id: 24,
-    name: 'Astana'
-}, {
-    id: 25,
-    name: 'Pristina'
-}, {
-    id: 26,
-    name: 'Riga'
-}, {
-    id: 27,
-    name: 'Vaduz'
-}, {
-    id: 28,
-    name: 'Vilnius'
-}, {
-    id: 29,
-    name: 'Luxembourg (name)'
-}, {
-    id: 30,
-    name: 'Skopje'
-}, {
-    id: 31,
-    name: 'Valletta'
-}, {
-    id: 32,
-    name: 'Chisinau'
-}, {
-    id: 33,
-    name: 'Monaco'
-}, {
-    id: 34,
-    name: 'Podgorica'
-}, {
-    id: 35,
-    name: 'Amsterdam'
-}, {
-    id: 36,
-    name: 'Oslo'
-}, {
-    id: 37,
-    name: 'Warsaw'
-}, {
-    id: 38,
-    name: 'Lisbon'
-}, {
-    id: 39,
-    name: 'Bucharest'
-}, {
-    id: 40,
-    name: 'Moscow'
-}, {
-    id: 41,
-    name: 'San Marino'
-}, {
-    id: 42,
-    name: 'Belgrade'
-}, {
-    id: 43,
-    name: 'Bratislava'
-}, {
-    id: 44,
-    name: 'Ljubljana'
-}, {
-    id: 45,
-    name: 'Madrid'
-}, {
-    id: 46,
-    name: 'Stockholm'
-}, {
-    id: 47,
-    name: 'Bern'
-}, {
-    id: 48,
-    name: 'Ankara'
-}, {
-    id: 49,
-    name: 'Kyiv'
-}, {
-    id: 50,
-    name: 'London'
-}, {
-    id: 51,
-    name: 'Vatican City'
-}];
+import { CITY_REMOVE, WEATHER_REQUEST, WEATHER_RECEIVE } from '../actions/CitiesPage/types';
+
+import config from '../../config';
+
+const initialState = Immutable({
+    isFetching: false,
+    isLoaded: false,
+    list: [
+        {
+            id: 3183875,
+            name: 'Tirana',
+            country: 'AL'
+        },
+        {
+            id: 3041563,
+            name: 'Andorra la Vella',
+            country: 'AD'
+        },
+        {
+            id: 616051,
+            name: 'Yerevan',
+            country: 'AM'
+        },
+        {
+            id: 2761369,
+            name: 'Vienna',
+            country: 'AT'
+        },
+        {
+            id: 587084,
+            name: 'Baku',
+            country: 'AZ'
+        },
+        {
+            id: 625144,
+            name: 'Minsk',
+            country: 'BY'
+        },
+        {
+            id: 2800866,
+            name: 'Brussels',
+            country: 'BE'
+        },
+        {
+            id: 3191281,
+            name: 'Sarajevo',
+            country: 'BA'
+        },
+        {
+            id: 727011,
+            name: 'Sofia',
+            country: 'BG'
+        },
+        {
+            id: 3186886,
+            name: 'Zagreb',
+            country: 'HR'
+        },
+        {
+            id: 146268,
+            name: 'Nicosia',
+            country: 'CY'
+        },
+        {
+            id: 3067696,
+            name: 'Prague',
+            country: 'CZ'
+        },
+        {
+            id: 2618425,
+            name: 'Copenhagen',
+            country: 'DK'
+        },
+        {
+            id: 588409,
+            name: 'Tallinn',
+            country: 'EE'
+        },
+        {
+            id: 658225,
+            name: 'Helsinki',
+            country: 'FI'
+        },
+        {
+            id: 2988507,
+            name: 'Paris',
+            country: 'FR'
+        },
+        {
+            id: 611717,
+            name: 'Tbilisi',
+            country: 'GE'
+        },
+        {
+            id: 2950159,
+            name: 'Berlin',
+            country: 'DE'
+        },
+        {
+            id: 264371,
+            name: 'Athens',
+            country: 'GR'
+        },
+        {
+            id: 3054643,
+            name: 'Budapest',
+            country: 'HU'
+        }
+    ]
+});
 
 const cities = (state = initialState, action) => {
     switch (action.type) {
         case CITY_REMOVE:
-            return state.filter(city => city.id !== action.id);
+            return state.list.filter(city => city.id !== action.id);
+        case WEATHER_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            };
+        case WEATHER_RECEIVE:
+            return {
+                ...state,
+                isFetching: false,
+                isLoaded: true,
+                list: state.list.map(city => {
+                    const item = action.list.find(item => city.id === item.id);
+
+                    return {
+                        ...city,
+                        weather: {
+                            clouds: {
+                                description: item.weather[0].description,
+                                icon: `${config.openWeatherMap.icon}/${item.weather[0].icon}.png`
+                            },
+                            temp: item.main.temp
+                        }
+                    }
+                })
+            };
         default:
             return state;
     }

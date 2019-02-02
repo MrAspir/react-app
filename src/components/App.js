@@ -2,7 +2,7 @@ import React from 'react';
 
 import Header from './Header';
 import CitiesPage from './CitiesPage';
-import Footer from "./Footer";
+import Footer from './Footer';
 
 const App = () => (
     <div className="wrapper">

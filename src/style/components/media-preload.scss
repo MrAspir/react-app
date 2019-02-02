@@ -1,0 +1,26 @@
+%media-preload {
+    position: relative;
+
+    &::after {
+        @include transition($transition-base);
+
+        position: absolute;
+        z-index: 5;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        content: '';
+        visibility: visible;
+        opacity: 1;
+        pointer-events: none;
+        background: transparentize($white, 0.5) url('images/loading.svg') center no-repeat;
+    }
+
+    &:not(.loading) {
+        &::after {
+            visibility: hidden;
+            opacity: 0;
+        }
+    }
+}
