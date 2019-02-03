@@ -52,6 +52,7 @@ class CitiesList extends Component {
                         <tr>
                             <th className="cities__count">#</th>
                             <th className="cities__name">City</th>
+                            <th className="cities__clouds">Clouds</th>
                             <th className="cities__temp">Temperature</th>
                             <th className="cities__action">{''}</th>
                         </tr>

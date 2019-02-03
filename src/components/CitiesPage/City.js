@@ -11,8 +11,12 @@ const City = ({ count, name, isFetching, weather, onRemove }) => {
             <td className="table__count">{count + 1}</td>
             <td className="cities__name">{name}</td>
 
+            <td className="cities__clouds">
+                <img src={weather.clouds.icon} alt={weather.clouds.description} title={weather.clouds.description} />
+                <span className="cities__clouds-value">{weather.clouds.description}</span>
+            </td>
+
             <td className="cities__temp">
-                <img src={weather.clouds.icon} alt={weather.clouds.description} />
                 <span className="cities__temp-value">{weather.temp}</span>
             </td>
 

@@ -1,35 +1,68 @@
 .cities {
     @extend .col-12;
 
-    &__name {
-        width: 100%;
-    }
-
-    &__temp {
-        white-space: nowrap;
-
-        &-value {
-            line-height: 2;
-            display: inline-block;
-            width: 60px;
-            text-align: center;
-            margin-left: 10px;
-
-            &::after {
-                content: '°C';
-            }
-        }
-    }
-
-
     &__table {
         @extend %media-preload;
 
         min-height: 200px;
+
+        @include media-breakpoint-down(xs) {
+            overflow: auto;
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+    }
+
+    &__name {
+        width: 100%;
+    }
+
+    &__clouds,
+    &__temp {
+        white-space: nowrap;
+
+        &-value {
+            display: inline-block;
+            margin-left: 10px;
+        }
+    }
+
+    &__clouds {
+        @include media-breakpoint-down(sm) {
+            text-align: center;
+        }
+    }
+
+    &__clouds-value {
+        @include media-breakpoint-down(sm) {
+            display: none;
+        }
+    }
+
+    &__temp-value {
+        line-height: 2;
+        width: 60px;
+        text-align: center;
+
+        &::after {
+            content: '°C';
+        }
     }
 
     td {
         padding: 5px 10px;
         vertical-align: middle;
+
+        &:first-child {
+            @include media-breakpoint-down(xs) {
+                padding-left: 25px;
+            }
+        }
+
+        &:last-child {
+            @include media-breakpoint-down(xs) {
+                padding-right: 25px;
+            }
+        }
     }
 }
