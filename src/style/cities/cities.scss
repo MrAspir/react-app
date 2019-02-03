@@ -39,10 +39,10 @@
         }
     }
 
-    &__temp-value {
-        line-height: 2;
-        width: 60px;
+
+    &__temp {
         text-align: center;
+        color: $white;
 
         &::after {
             content: '°C';

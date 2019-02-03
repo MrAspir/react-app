@@ -22,6 +22,14 @@ class CitiesList extends Component {
         onRemoveCity: PropTypes.func.isRequired
     };
 
+    state = {
+        color: {
+            r: 0,
+            g: 0,
+            b: 255
+        }
+    };
+
     componentDidMount() {
         this.props.onLoadWeather(this.props.cities.list);
     }
@@ -39,6 +47,30 @@ class CitiesList extends Component {
             return firstItem.weather.temp > secondItem.weather.temp ? 1 :
                 firstItem.weather.temp < secondItem.weather.temp ? -1 : 0;
         });
+    };
+
+    checkColorRange = (value) => {
+        return value > 255 ? 255 : value < 0 ? 0 : value;
+    };
+
+    tempColor = (index) => {
+        const step = Math.round(255 / this.props.cities.list.length);
+
+        let red = this.state.color.r;
+        let green = this.state.color.g;
+        let blue = this.state.color.b;
+
+        for (let i = 0; i <= index; i++) {
+            if (i === 0) {
+                continue;
+            }
+
+            red += step;
+            green = i < Math.round(this.props.cities.list.length / 2) ? green + step : green - step;
+            blue -= step;
+        }
+
+        return `rgba(${this.checkColorRange(red)}, ${this.checkColorRange(green)}, ${this.checkColorRange(blue)})`;
     };
 
     render() {
@@ -64,6 +96,7 @@ class CitiesList extends Component {
                                 key={city.id}
                                 {...city}
                                 count={index}
+                                background={this.tempColor(index)}
                                 onRemove={() => this.props.onRemoveCity(city.id)}
                             />
                         )}

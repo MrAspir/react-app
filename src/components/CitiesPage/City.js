@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const City = ({ count, name, isFetching, weather, onRemove }) => {
-    console.log('-- weather: --', weather);
-
+const City = ({ count, name, isFetching, weather, background, onRemove }) => {
     return (
         <tr>
             <td className="table__count">{count + 1}</td>
@@ -16,9 +14,7 @@ const City = ({ count, name, isFetching, weather, onRemove }) => {
                 <span className="cities__clouds-value">{weather.clouds.description}</span>
             </td>
 
-            <td className="cities__temp">
-                <span className="cities__temp-value">{weather.temp}</span>
-            </td>
+            <td className="cities__temp" style={{ background: background }}>{weather.temp}</td>
 
             <td className="cities__action">
                 <button className="btn btn-danger" onClick={onRemove}>
