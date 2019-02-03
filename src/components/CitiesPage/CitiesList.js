@@ -30,8 +30,20 @@ class CitiesList extends Component {
         return this.props.cities.isLoaded;
     };
 
+    sortingCities = (list) => {
+        if (!this.isLoaded()) {
+            return;
+        }
+
+        return list.sort((firstItem, secondItem) => {
+            return firstItem.weather.temp > secondItem.weather.temp ? 1 :
+                firstItem.weather.temp < secondItem.weather.temp ? -1 : 0;
+        });
+    };
+
     render() {
         const componentClass = this.isLoaded() ? 'cities__table' : 'cities__table loading';
+        const sortedList = this.sortingCities([ ...this.props.cities.list ]);
 
         return (
             <div className={componentClass}>
@@ -46,7 +58,7 @@ class CitiesList extends Component {
                     </thead>
 
                     <tbody>
-                        {this.isLoaded() && this.props.cities.list.map((city, index) =>
+                        {this.isLoaded() && sortedList.map((city, index) =>
                             <City
                                 key={city.id}
                                 {...city}
