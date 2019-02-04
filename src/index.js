@@ -15,6 +15,8 @@ import './index.scss';
 
 import reducer from './store';
 
+import { saveState } from './service/localStorage';
+
 import App from './components/App';
 
 library.add(faTrashAlt);
@@ -23,6 +25,10 @@ const store = createStore(
     reducer,
     composeWithDevTools(applyMiddleware(thunk))
 );
+
+store.subscribe(() => {
+   saveState('cityList', store.getState().cities.list);
+});
 
 ReactDOM.render(
     <Provider store={store}>

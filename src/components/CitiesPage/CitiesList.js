@@ -54,7 +54,7 @@ class CitiesList extends Component {
     };
 
     tempColor = (index) => {
-        const step = Math.round(255 / this.props.cities.list.length);
+        const step = Math.round(255 / (this.props.cities.list.length - 1));
 
         let red = this.state.color.r;
         let green = this.state.color.g;

@@ -2,6 +2,8 @@ import Immutable from 'seamless-immutable';
 
 import { CITY_REMOVE, WEATHER_REQUEST, WEATHER_RECEIVE } from '../actions/CitiesPage/types';
 
+import { loadState } from '../../service/localStorage';
+
 import config from '../../config';
 
 const initialState = Immutable({
@@ -111,10 +113,16 @@ const initialState = Immutable({
     ]
 });
 
-const cities = (state = initialState, action) => {
+const cities = (state = {
+    ...initialState,
+    list: loadState('cityList') || initialState.list
+}, action) => {
     switch (action.type) {
         case CITY_REMOVE:
-            return state.list.filter(city => city.id !== action.id);
+            return {
+                ...state,
+                list: state.list.filter(city => city.id !== action.id)
+            };
         case WEATHER_REQUEST:
             return {
                 ...state,
