@@ -1,6 +1,6 @@
 import Immutable from 'seamless-immutable';
 
-import { CITY_REMOVE, WEATHER_REQUEST, WEATHER_RECEIVE } from '../actions/CitiesPage/types';
+import { CITY_REMOVE, WEATHER_REQUEST, WEATHER_RECEIVE, DATA_REFRESH } from '../actions/CitiesPage/types';
 
 import { loadState } from '../../service/localStorage';
 
@@ -113,10 +113,15 @@ const initialState = Immutable({
     ]
 });
 
-const cities = (state = {
-    ...initialState,
-    list: loadState('cityList') || initialState.list
-}, action) => {
+const appCities = (
+    state = {
+        ...initialState,
+        list: loadState('cityList') || initialState.list
+    },
+    action
+) => {
+    console.log(state);
+
     switch (action.type) {
         case CITY_REMOVE:
             return {
@@ -134,7 +139,11 @@ const cities = (state = {
                 isFetching: false,
                 isLoaded: true,
                 list: state.list.map(city => {
+                    console.log(action.list);
+
                     const item = action.list.find(item => city.id === item.id);
+
+                    console.log(item);
 
                     return {
                         ...city,
@@ -150,6 +159,19 @@ const cities = (state = {
             };
         default:
             return state;
+    }
+};
+
+const cities = (state, action) => {
+    switch (action.type) {
+        case DATA_REFRESH:
+            localStorage.removeItem('cityList');
+
+            console.log(localStorage.getItem('cityList'));
+
+            return appCities(undefined, action);
+        default:
+            return appCities(state, action);
     }
 };
 

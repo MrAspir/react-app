@@ -2,27 +2,27 @@ import { CITY_REMOVE, WEATHER_REQUEST, WEATHER_RECEIVE } from './types';
 
 import OpenWeatherMap from '../../../service/openWeatherMap';
 
-export function removeCity (id) {
+const removeCity = (id) => {
     return {
         type: CITY_REMOVE,
         id
     }
-}
+};
 
-export function requestWeather () {
+const requestWeather = () => {
     return {
         type: WEATHER_REQUEST
     }
-}
+};
 
-export function receiveWeather (list) {
+const receiveWeather = (list) => {
     return {
         type: WEATHER_RECEIVE,
         list
     }
-}
+};
 
-export function getWeather (data) {
+const getWeather = (data) => {
     return function (dispatch) {
         dispatch(requestWeather());
 
@@ -33,4 +33,11 @@ export function getWeather (data) {
                     console.log(response);
             });
     }
+};
+
+export {
+    removeCity,
+    requestWeather,
+    receiveWeather,
+    getWeather
 }

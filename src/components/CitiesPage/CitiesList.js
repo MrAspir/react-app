@@ -34,6 +34,12 @@ class CitiesList extends Component {
         this.props.onLoadWeather(this.props.cities.list);
     }
 
+    componentWillUpdate(nextProps, nextState, nextContext) {
+        if (!nextProps.cities.isFetching && !nextProps.cities.isLoaded) {
+            nextProps.onLoadWeather(nextProps.cities.list);
+        }
+    }
+
     isLoaded = () => {
         return this.props.cities.isLoaded;
     };
