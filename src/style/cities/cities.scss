@@ -14,8 +14,17 @@
         }
     }
 
-    table {
+    .table {
         margin-bottom: 0;
+
+        thead th {
+            vertical-align: middle;
+        }
+
+        th,
+        td {
+            padding: 5px 10px;
+        }
     }
 
     tr {
@@ -32,7 +41,6 @@
     }
 
     td {
-        padding: 5px 10px;
         vertical-align: middle;
 
         &:first-child {

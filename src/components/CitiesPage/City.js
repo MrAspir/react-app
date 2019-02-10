@@ -60,7 +60,7 @@ class City extends Component {
                         </button>
                     </div>
 
-                    <button className="btn btn-danger" title="Remove city" onClick={this.props.onRemove}>
+                    <button className="btn btn-danger" title="Remove city" onClick={() => this.props.onRemove()}>
                         <FontAwesomeIcon icon="trash-alt" />
                     </button>
                 </td>

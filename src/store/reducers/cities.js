@@ -220,6 +220,7 @@ const appCities = (
                             ...city,
                             weather: {
                                 clouds: {
+                                    status: '',
                                     description: '',
                                     icon: ''
                                 },
@@ -232,6 +233,7 @@ const appCities = (
                         ...city,
                         weather: {
                             clouds: {
+                                status: item.clouds.all,
                                 description: item.weather[0].description,
                                 icon: `${config.openWeatherMap.icon}/${item.weather[0].icon}.png`
                             },
