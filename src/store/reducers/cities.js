@@ -245,8 +245,6 @@ const appCities = (
                 ...state,
                 list: state.list.map(city => {
                     if (city.id === action.id) {
-                        console.log(action.status);
-
                         return {
                             ...city,
                             status: {

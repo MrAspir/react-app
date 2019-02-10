@@ -55,23 +55,18 @@ class CitiesList extends Component {
     );
 
     tempColor = (index) => {
-        const step = Math.round(255 / (this.props.cities.list.length - 1));
-
         let red = this.state.color.r;
-        let green = this.state.color.g;
         let blue = this.state.color.b;
 
-        for (let i = 0; i <= index; i++) {
-            if (i === 0) {
-                continue;
-            }
+        if (index) {
+            const length = this.props.cities.list.length - 1;
+            const step = 255 / length;
 
-            red += step;
-            green = i < Math.round(this.props.cities.list.length / 2) ? green + step : green - step;
-            blue -= step;
+            red = step * index;
+            blue = step * (length - index);
         }
 
-        return `rgba(${this.checkColorRange(red)}, ${this.checkColorRange(green)}, ${this.checkColorRange(blue)})`;
+        return `rgba(${this.checkColorRange(red)}, ${this.checkColorRange(this.state.color.g)}, ${this.checkColorRange(blue)})`;
     };
 
     render() {
