@@ -1,10 +1,8 @@
 import { DATA_REFRESH } from './types';
 
-const refreshData = () => {
-  return {
-      type: DATA_REFRESH
-  }
-};
+const refreshData = () => ({
+  type: DATA_REFRESH
+});
 
 export {
     refreshData

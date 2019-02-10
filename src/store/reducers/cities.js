@@ -1,6 +1,7 @@
 import Immutable from 'seamless-immutable';
 
-import { CITY_REMOVE, WEATHER_REQUEST, WEATHER_RECEIVE, DATA_REFRESH } from '../actions/CitiesPage/types';
+import { CITY_REMOVE, WEATHER_REQUEST, WEATHER_RECEIVE, DATA_REFRESH,
+    CHANGE_STATUS } from '../actions/CitiesPage/types';
 
 import { loadState } from '../../service/localStorage';
 
@@ -13,102 +14,182 @@ const initialState = Immutable({
         {
             id: 3183875,
             name: 'Tirana',
-            country: 'AL'
+            country: 'AL',
+            status: {
+                isVisited: false,
+                isGoingToVisit: false
+            }
         },
         {
             id: 3041563,
             name: 'Andorra la Vella',
-            country: 'AD'
+            country: 'AD',
+            status: {
+                isVisited: false,
+                isGoingToVisit: false
+            }
         },
         {
             id: 616051,
             name: 'Yerevan',
-            country: 'AM'
+            country: 'AM',
+            status: {
+                isVisited: false,
+                isGoingToVisit: false
+            }
         },
         {
             id: 2761369,
             name: 'Vienna',
-            country: 'AT'
+            country: 'AT',
+            status: {
+                isVisited: false,
+                isGoingToVisit: false
+            }
         },
         {
             id: 587084,
             name: 'Baku',
-            country: 'AZ'
+            country: 'AZ',
+            status: {
+                isVisited: false,
+                isGoingToVisit: false
+            }
         },
         {
             id: 625144,
             name: 'Minsk',
-            country: 'BY'
+            country: 'BY',
+            status: {
+                isVisited: false,
+                isGoingToVisit: false
+            }
         },
         {
             id: 2800866,
             name: 'Brussels',
-            country: 'BE'
+            country: 'BE',
+            status: {
+                isVisited: false,
+                isGoingToVisit: false
+            }
         },
         {
             id: 3191281,
             name: 'Sarajevo',
-            country: 'BA'
+            country: 'BA',
+            status: {
+                isVisited: false,
+                isGoingToVisit: false
+            }
         },
         {
             id: 727011,
             name: 'Sofia',
-            country: 'BG'
+            country: 'BG',
+            status: {
+                isVisited: false,
+                isGoingToVisit: false
+            }
         },
         {
             id: 3186886,
             name: 'Zagreb',
-            country: 'HR'
+            country: 'HR',
+            status: {
+                isVisited: false,
+                isGoingToVisit: false
+            }
         },
         {
             id: 146268,
             name: 'Nicosia',
-            country: 'CY'
+            country: 'CY',
+            status: {
+                isVisited: false,
+                isGoingToVisit: false
+            }
         },
         {
             id: 3067696,
             name: 'Prague',
-            country: 'CZ'
+            country: 'CZ',
+            status: {
+                isVisited: false,
+                isGoingToVisit: false
+            }
         },
         {
             id: 2618425,
             name: 'Copenhagen',
-            country: 'DK'
+            country: 'DK',
+            status: {
+                isVisited: false,
+                isGoingToVisit: false
+            }
         },
         {
             id: 588409,
             name: 'Tallinn',
-            country: 'EE'
+            country: 'EE',
+            status: {
+                isVisited: false,
+                isGoingToVisit: false
+            }
         },
         {
             id: 658225,
             name: 'Helsinki',
-            country: 'FI'
+            country: 'FI',
+            status: {
+                isVisited: false,
+                isGoingToVisit: false
+            }
         },
         {
             id: 2988507,
             name: 'Paris',
-            country: 'FR'
+            country: 'FR',
+            status: {
+                isVisited: false,
+                isGoingToVisit: false
+            }
         },
         {
             id: 611717,
             name: 'Tbilisi',
-            country: 'GE'
+            country: 'GE',
+            status: {
+                isVisited: false,
+                isGoingToVisit: false
+            }
         },
         {
             id: 2950159,
             name: 'Berlin',
-            country: 'DE'
+            country: 'DE',
+            status: {
+                isVisited: false,
+                isGoingToVisit: false
+            }
         },
         {
             id: 264371,
             name: 'Athens',
-            country: 'GR'
+            country: 'GR',
+            status: {
+                isVisited: false,
+                isGoingToVisit: false
+            }
         },
         {
             id: 3054643,
             name: 'Budapest',
-            country: 'HU'
+            country: 'HU',
+            status: {
+                isVisited: false,
+                isGoingToVisit: false
+            }
         }
     ]
 });
@@ -120,14 +201,7 @@ const appCities = (
     },
     action
 ) => {
-    console.log(state);
-
     switch (action.type) {
-        case CITY_REMOVE:
-            return {
-                ...state,
-                list: state.list.filter(city => city.id !== action.id)
-            };
         case WEATHER_REQUEST:
             return {
                 ...state,
@@ -139,11 +213,20 @@ const appCities = (
                 isFetching: false,
                 isLoaded: true,
                 list: state.list.map(city => {
-                    console.log(action.list);
-
                     const item = action.list.find(item => city.id === item.id);
 
-                    console.log(item);
+                    if (!item) {
+                        return {
+                            ...city,
+                            weather: {
+                                clouds: {
+                                    description: '',
+                                    icon: ''
+                                },
+                                temp: ''
+                            }
+                        }
+                    }
 
                     return {
                         ...city,
@@ -157,6 +240,30 @@ const appCities = (
                     }
                 })
             };
+        case CHANGE_STATUS:
+            return {
+                ...state,
+                list: state.list.map(city => {
+                    if (city.id === action.id) {
+                        console.log(action.status);
+
+                        return {
+                            ...city,
+                            status: {
+                                ...city.status,
+                                [action.status]: !city.status[action.status]
+                            }
+                        }
+                    }
+
+                    return city;
+                })
+            };
+        case CITY_REMOVE:
+            return {
+                ...state,
+                list: state.list.filter(city => city.id !== action.id)
+            };
         default:
             return state;
     }
@@ -166,8 +273,6 @@ const cities = (state, action) => {
     switch (action.type) {
         case DATA_REFRESH:
             localStorage.removeItem('cityList');
-
-            console.log(localStorage.getItem('cityList'));
 
             return appCities(undefined, action);
         default:

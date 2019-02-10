@@ -1,43 +1,40 @@
-import { CITY_REMOVE, WEATHER_REQUEST, WEATHER_RECEIVE } from './types';
+import { CITY_REMOVE, WEATHER_REQUEST, WEATHER_RECEIVE, CHANGE_STATUS } from './types';
 
 import OpenWeatherMap from '../../../service/openWeatherMap';
 
-const removeCity = (id) => {
-    return {
-        type: CITY_REMOVE,
-        id
-    }
+const requestWeather = () => ({
+    type: WEATHER_REQUEST
+});
+
+const receiveWeather = list => ({
+    type: WEATHER_RECEIVE,
+    list
+});
+
+const getWeather = data => dispatch => {
+    dispatch(requestWeather());
+
+    return OpenWeatherMap.getTemp(data)
+        .then(response => (
+            response.hasOwnProperty('list') ?
+            dispatch(receiveWeather(response.list)) :
+            console.log(response)
+        ));
 };
 
-const requestWeather = () => {
-    return {
-        type: WEATHER_REQUEST
-    }
-};
+const changeCityStatus = (id, status) => ({
+    type: CHANGE_STATUS,
+    id,
+    status
+});
 
-const receiveWeather = (list) => {
-    return {
-        type: WEATHER_RECEIVE,
-        list
-    }
-};
-
-const getWeather = (data) => {
-    return function (dispatch) {
-        dispatch(requestWeather());
-
-        return OpenWeatherMap.getTemp(data)
-            .then((response) => {
-                return response.hasOwnProperty('list') ?
-                    dispatch(receiveWeather(response.list)) :
-                    console.log(response);
-            });
-    }
-};
+const removeCity = id => ({
+    type: CITY_REMOVE,
+    id
+});
 
 export {
-    removeCity,
-    requestWeather,
-    receiveWeather,
-    getWeather
+    getWeather,
+    changeCityStatus,
+    removeCity
 }

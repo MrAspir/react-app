@@ -3,4 +3,6 @@ export const CITY_REMOVE = 'CITY_REMOVE';
 export const WEATHER_REQUEST = 'WEATHER_REQUEST';
 export const WEATHER_RECEIVE = 'WEATHER_RECEIVE';
 
+export const CHANGE_STATUS = 'CHANGE_STATUS';
+
 export const DATA_REFRESH = 'DATA_REFRESH';

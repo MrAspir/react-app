@@ -9,11 +9,15 @@ class CitiesList extends Component {
             list: PropTypes.arrayOf(PropTypes.shape({
                 id: PropTypes.number.isRequired,
                 name: PropTypes.string.isRequired,
+                status: PropTypes.shape({
+                    isVisited: PropTypes.bool.isRequired,
+                    isGoingToVisit: PropTypes.bool.isRequired
+                }).isRequired,
                 weather: PropTypes.shape({
                     clouds: PropTypes.shape({
                         description: PropTypes.string.isRequired,
                         icon: PropTypes.string.isRequired
-                    }),
+                    }).isRequired,
                     temp: PropTypes.number.isRequired
                 })
             }).isRequired).isRequired
@@ -40,24 +44,15 @@ class CitiesList extends Component {
         }
     }
 
-    isLoaded = () => {
-        return this.props.cities.isLoaded;
-    };
+    isLoaded = () => this.props.cities.isLoaded;
+    checkColorRange = value => (value > 255 ? 255 : value < 0 ? 0 : value);
 
-    sortingCities = (list) => {
-        if (!this.isLoaded()) {
-            return;
-        }
-
-        return list.sort((firstItem, secondItem) => {
+    sortingCities = list => (
+        list.sort((firstItem, secondItem) => {
             return firstItem.weather.temp > secondItem.weather.temp ? 1 :
                 firstItem.weather.temp < secondItem.weather.temp ? -1 : 0;
-        });
-    };
-
-    checkColorRange = (value) => {
-        return value > 255 ? 255 : value < 0 ? 0 : value;
-    };
+        })
+    );
 
     tempColor = (index) => {
         const step = Math.round(255 / (this.props.cities.list.length - 1));
@@ -80,11 +75,8 @@ class CitiesList extends Component {
     };
 
     render() {
-        const componentClass = this.isLoaded() ? 'cities__table' : 'cities__table loading';
-        const sortedList = this.sortingCities([ ...this.props.cities.list ]);
-
         return (
-            <div className={componentClass}>
+            <div className={`cities__table ${!this.isLoaded() ? 'loading' : ''}`}>
                 <table className="table">
                     <thead className="thead-light">
                         <tr>
@@ -92,17 +84,18 @@ class CitiesList extends Component {
                             <th className="cities__name">City</th>
                             <th className="cities__clouds">Clouds</th>
                             <th className="cities__temp">Temperature</th>
-                            <th className="cities__action">{''}</th>
+                            <th className="cities__action">Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        {this.isLoaded() && sortedList.map((city, index) =>
+                        {this.isLoaded() && this.sortingCities([ ...this.props.cities.list ]).map((city, index) =>
                             <City
                                 key={city.id}
                                 {...city}
                                 count={index}
                                 background={this.tempColor(index)}
+                                onChangeStatus={(status) => this.props.onChangeCityStatus(city.id, status)}
                                 onRemove={() => this.props.onRemoveCity(city.id)}
                             />
                         )}

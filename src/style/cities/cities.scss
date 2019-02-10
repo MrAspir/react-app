@@ -13,6 +13,34 @@
         }
     }
 
+    tr {
+        &.visited {
+            background: $gray-400;
+        }
+
+        &.wish {
+            color: $white;
+            background: transparentize($purple, 0.25);
+        }
+    }
+
+    td {
+        padding: 5px 10px;
+        vertical-align: middle;
+
+        &:first-child {
+            @include media-breakpoint-down(xs) {
+                padding-left: 25px;
+            }
+        }
+
+        &:last-child {
+            @include media-breakpoint-down(xs) {
+                padding-right: 25px;
+            }
+        }
+    }
+
     &__name {
         line-height: 1;
         width: 100%;
@@ -40,7 +68,6 @@
         }
     }
 
-
     &__temp {
         text-align: center;
         color: $white;
@@ -50,20 +77,25 @@
         }
     }
 
-    td {
-        padding: 5px 10px;
-        vertical-align: middle;
+    &__action {
+        white-space: nowrap;
 
+        .btn-group {
+            margin-right: 10px;
+        }
+    }
+
+    &__bar {
         &:first-child {
-            @include media-breakpoint-down(xs) {
-                padding-left: 25px;
-            }
+            padding-bottom: 20px;
         }
 
         &:last-child {
-            @include media-breakpoint-down(xs) {
-                padding-right: 25px;
-            }
+            padding-top: 20px;
+        }
+
+        .svg-inline--fa {
+            margin-right: 10px;
         }
     }
 }
