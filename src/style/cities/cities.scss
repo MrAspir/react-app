@@ -5,6 +5,7 @@
         @extend %media-preload;
 
         min-height: 200px;
+        background-color: $white;
 
         @include media-breakpoint-down(xs) {
             overflow: auto;
@@ -13,7 +14,13 @@
         }
     }
 
+    table {
+        margin-bottom: 0;
+    }
+
     tr {
+        @include transition($transition-base);
+
         &.visited {
             background: $gray-400;
         }
