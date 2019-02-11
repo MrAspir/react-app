@@ -49,7 +49,7 @@ class City extends Component {
                                title="Visited city"
                                onClick={() => this.props.onChangeStatus('isVisited') }
                         >
-                            <FontAwesomeIcon icon="calendar-check" />
+                            <FontAwesomeIcon icon={`${this.isVisited() ? 'calendar-check' : 'calendar-plus'}`} />
                         </button>
 
                         <button className={`btn btn-primary ${this.isGoingToVisit() ? 'active' : ''}`}
@@ -60,7 +60,7 @@ class City extends Component {
                         </button>
                     </div>
 
-                    <button className="btn btn-danger" title="Remove city" onClick={() => this.props.onRemove()}>
+                    <button className="btn btn-danger" title="Remove city" onClick={this.props.onRemove}>
                         <FontAwesomeIcon icon="trash-alt" />
                     </button>
                 </td>

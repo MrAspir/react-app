@@ -12,34 +12,6 @@ import slide3 from '../images/slide3.jpg'
 import slide4 from '../images/slide4.jpg'
 
 const App = () => {
-    /*const images = [slide1, slide2, slide3, slide4];
-
-    let number = 0;
-
-    let wrapperStyle = {
-        backgroundImage: `url(${images[number]})`,
-        backgroundPosition: 'center',
-        backgroundSize: 'cover'
-    };
-
-    setInterval(() => {
-        console.log(number);
-
-        number += 1;
-
-        if (number > (images.length - 1)) {
-            number = 0;
-        }
-
-        wrapperStyle = {
-            backgroundImage: `url(${images[number]})`,
-            backgroundPosition: 'center',
-            backgroundSize: 'cover'
-        };
-        console.log(wrapperStyle);
-
-    }, 5000);*/
-
     return (
         <div className="wrapper">
             <BackgroundSlider

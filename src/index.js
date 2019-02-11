@@ -9,7 +9,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import * as serviceWorker from './serviceWorker';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTrashAlt, faHistory, faCalendarCheck, faBookmark } from '@fortawesome/free-solid-svg-icons';
+import { faTrashAlt, faHistory, faCalendarPlus, faCalendarCheck, faBookmark, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 
 import './index.scss';
 
@@ -19,7 +19,7 @@ import { saveState } from './service/localStorage';
 
 import App from './components/App';
 
-library.add(faTrashAlt, faHistory, faCalendarCheck, faBookmark);
+library.add(faTrashAlt, faHistory, faCalendarPlus, faCalendarCheck, faBookmark, faPlusSquare);
 
 const store = createStore(
     reducer,
