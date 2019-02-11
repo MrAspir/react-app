@@ -87,33 +87,18 @@ class CitiesList extends Component {
         const temp = list.map(city => city.weather.temp);
         const min = Math.min(...temp);
         const diff = Math.max(...temp) - min;
-        const part = Math.floor((diff) / 4); // 3
-        const step = Math.floor(180 / part);
+        const step = Math.floor(240 / diff);
 
         let listColors = {};
 
+        let h = 0;
+        let s = 100;
+        let l = 35;
+
         for (let i = 0; i < list.length; ++i) {
-            const index = list[i].weather.temp - min;
+            h = 240 - (step * (list[i].weather.temp - min));
 
-            let r = 0;
-            let g = 0;
-            let b = 0;
-
-            if (index < part) {
-                b = 210;
-                g = step * (index % part);
-            } else if (index < part * 2) {
-                g = 180;
-                b = 180 - step * (index % part);
-            } else if (index < part * 3) {
-                g = 180;
-                r = step * (index % part);
-            } else {
-                r = 210;
-                g = 180 - Math.ceil(255 / (part + (diff % 4))) * (index - part * 3);
-            }
-
-            listColors[list[i].id] = `rgba(${r}, ${g}, ${b})`;
+            listColors[list[i].id] = `hsl(${h}, ${s}%, ${l}%)`;
         }
 
         this.setState({
