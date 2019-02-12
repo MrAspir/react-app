@@ -220,11 +220,11 @@ const appCities = (
                             ...city,
                             weather: {
                                 clouds: {
-                                    status: '',
+                                    status: 0,
                                     description: '',
                                     icon: ''
                                 },
-                                temp: ''
+                                temp: 0
                             }
                         }
                     }

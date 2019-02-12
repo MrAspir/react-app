@@ -11,15 +11,9 @@ const receiveWeather = list => ({
     list
 });
 
-const getWeather = data => dispatch => {
+const getWeather = data => async dispatch => {
     dispatch(requestWeather());
-
-    return OpenWeatherMap.getTemp(data)
-        .then(response => (
-            response.hasOwnProperty('list') ?
-            dispatch(receiveWeather(response.list)) :
-            console.log(response)
-        ));
+    dispatch(receiveWeather(await OpenWeatherMap.getTemp(data)));
 };
 
 const changeCityStatus = (id, status) => ({
