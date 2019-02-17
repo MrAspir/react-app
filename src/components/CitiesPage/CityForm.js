@@ -70,11 +70,11 @@ class CityForm extends Component {
                 <div className="searching">
                     <FontAwesomeIcon icon="sync" />
                 </div>
-            )
+            );
         } else if (!this.isFound()) {
             return false;
         } else if (this.isFound() && !this.props.city.name) {
-            return <div className="not-found">Not found</div>
+            return <div className="not-found">Not found</div>;
         }
 
         const {
@@ -89,7 +89,7 @@ class CityForm extends Component {
                 <br />
                 Geo coords <strong>[{lat}, {lon}]</strong></p>
             </div>
-        )
+        );
     };
 
     componentWillUpdate(nextProps, nextState, nextContext) {

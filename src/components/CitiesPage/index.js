@@ -30,7 +30,7 @@ class CitiesPage extends Component {
                 <CitiesModal isOpen={this.state.isOpen} onClose={() => this.closeModal()} />
             </div>
         );
-    };
+    }
 }
 
 export default CitiesPage;

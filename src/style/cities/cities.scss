@@ -130,9 +130,12 @@
             }
         }
 
-        .svg-inline--fa {
-            @include media-breakpoint-up(md) {
-                margin-right: 10px;
+        .btn-success,
+        .btn-warning {
+            .svg-inline--fa {
+                @include media-breakpoint-up(md) {
+                    margin-right: 10px;
+                }
             }
         }
     }

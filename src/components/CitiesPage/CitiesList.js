@@ -130,7 +130,7 @@ class CitiesList extends Component {
                     onRemove={() => onRemoveCity(city.id)}
                 />
             )
-        )
+        );
     };
 
     componentDidMount() {
@@ -190,7 +190,7 @@ class CitiesList extends Component {
                 </table>
             </div>
         );
-    };
+    }
 }
 
 export default CitiesList;

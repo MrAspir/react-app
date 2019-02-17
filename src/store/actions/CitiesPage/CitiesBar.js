@@ -6,4 +6,4 @@ const dataRefresh = () => ({
 
 export {
     dataRefresh
-}
+};

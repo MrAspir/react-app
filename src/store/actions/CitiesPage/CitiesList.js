@@ -31,4 +31,4 @@ export {
     cityStatus,
     cityRemove,
     getWeather
-}
+};

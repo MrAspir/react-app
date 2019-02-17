@@ -34,4 +34,4 @@ export {
     search,
     searchClear,
     addCity
-}
+};

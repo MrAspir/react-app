@@ -228,7 +228,7 @@ const appWeather = (state, action) => {
                                 },
                                 temp: 0
                             }
-                        }
+                        };
                     }
 
                     const { main: { temp }, clouds: { all }, weather: { 0: { description, icon } } } = item;
@@ -243,7 +243,7 @@ const appWeather = (state, action) => {
                                 icon: `${openWeatherMap.icon}/${icon}.png`
                             }
                         }
-                    }
+                    };
                 })
             };
         default:
@@ -319,7 +319,7 @@ const appCities = (state, action) => {
             if (state.list.find(city => city.id === action.city.id)) {
                 return {
                     ...state
-                }
+                };
             }
 
             const { id, name, country, weather: { temp, clouds: { all, description, icon } } } = action.city;
