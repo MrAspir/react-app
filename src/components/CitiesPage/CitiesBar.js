@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-class CitiesBar {
+class CitiesBar extends Component {
+    static propTypes = {
+        onOpenModal: PropTypes.func.isRequired,
+        onRefreshData: PropTypes.func.isRequired
+    };
+
     render() {
+        const { onOpenModal, onRefreshData } = this.props;
+
         return (
             <div className="cities__bar">
                 <div className="row justify-content-between">
@@ -32,10 +39,5 @@ class CitiesBar {
         );
     }
 }
-
-CitiesBar.propTypes = {
-    onOpenModal: PropTypes.func.isRequired,
-    onRefreshData: PropTypes.func.isRequired
-};
 
 export default CitiesBar;
