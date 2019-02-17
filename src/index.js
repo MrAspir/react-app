@@ -9,17 +9,18 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import * as serviceWorker from './serviceWorker';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTrashAlt, faHistory, faCalendarPlus, faCalendarCheck, faBookmark, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
-
-import './index.scss';
+import { faTrashAlt, faHistory, faCalendarPlus, faCalendarCheck, faBookmark, faPlusSquare, faTimes,
+    faSync } from '@fortawesome/free-solid-svg-icons';
 
 import reducer from './store';
 
-import { saveState } from './service/localStorage';
+import LocalStorage from './service/LocalStorage';
 
 import App from './components/App';
 
-library.add(faTrashAlt, faHistory, faCalendarPlus, faCalendarCheck, faBookmark, faPlusSquare);
+import './index.scss';
+
+library.add(faTrashAlt, faHistory, faCalendarPlus, faCalendarCheck, faBookmark, faPlusSquare, faTimes, faSync);
 
 const store = createStore(
     reducer,
@@ -27,7 +28,7 @@ const store = createStore(
 );
 
 store.subscribe(() => {
-   saveState('cityList', store.getState().cities.list);
+    LocalStorage.save('cityList', store.getState().cities.list);
 });
 
 ReactDOM.render(

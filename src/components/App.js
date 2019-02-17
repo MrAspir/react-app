@@ -14,9 +14,7 @@ import slide4 from '../images/slide4.jpg'
 const App = () => {
     return (
         <div className="wrapper">
-            <BackgroundSlider
-                images={[slide1, slide2, slide3, slide4]}
-                duration={10} transition={2} />
+            <BackgroundSlider images={[slide1, slide2, slide3, slide4]} duration={10} transition={2} />
 
             <Header />
 
@@ -31,6 +29,6 @@ const App = () => {
             <Footer />
         </div>
     );
-}
+};
 
 export default App;

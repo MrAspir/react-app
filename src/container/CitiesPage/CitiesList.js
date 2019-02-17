@@ -4,14 +4,11 @@ import { removeCity, getWeather, changeCityStatus } from '../../store/actions/Ci
 
 import CitiesList from '../../components/CitiesPage/CitiesList';
 
-const mapStateToProps = state => ({
-    cities: state.cities
-});
-
-const mapDispatchToProps = dispatch => ({
+export default connect(state => ({
+    isLoaded: state.cities.isLoaded,
+    cities: state.cities.list
+}), dispatch => ({
     onLoadWeather: data => dispatch(getWeather(data)),
     onChangeCityStatus: (id, status) => dispatch(changeCityStatus(id, status)),
     onRemoveCity: id => dispatch(removeCity(id))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(CitiesList);
+}))(CitiesList);

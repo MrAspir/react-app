@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { isVisited, isGoingToVisit } from '../../store/actions/CitiesPage/status';
+
 class City extends Component {
     static propTypes = {
         count: PropTypes.number.isRequired,
@@ -26,41 +28,45 @@ class City extends Component {
     isGoingToVisit = () => this.props.status.isGoingToVisit;
 
     render() {
+        const {
+            count, name, weather: { temp, clouds: { description, icon } }, background, onChangeStatus, onRemove
+        } = this.props;
+
         return (
             <tr className={`${this.isVisited() ? 'visited' : ''} ${this.isGoingToVisit() ? 'wish' : ''}`}>
-                <td className="table__count">{this.props.count + 1}</td>
-                <td className="cities__name">{this.props.name}</td>
+                <td className="table__count">{count + 1}</td>
+                <td className="cities__name">{name}</td>
 
                 <td className="cities__clouds">
-                    <img src={this.props.weather.clouds.icon}
-                         alt={this.props.weather.clouds.description}
-                         title={this.props.weather.clouds.description}
+                    <img src={icon}
+                         alt={description}
+                         title={description}
                     />
-                    <span className="cities__clouds-value">{this.props.weather.clouds.description}</span>
+                    <span className="cities__clouds-value">{description}</span>
                 </td>
 
-                <td className="cities__temp" style={{ background: this.props.background }}>
-                    {this.props.weather.temp}
+                <td className="cities__temp" style={{ background: background }}>
+                    {temp}
                 </td>
 
                 <td className="cities__action">
                     <div className="btn-group btn-group-toggle" role="group">
                         <button className={`btn btn-primary ${this.isVisited() ? 'active' : ''}`}
                                title="Visited city"
-                               onClick={() => this.props.onChangeStatus('isVisited') }
+                               onClick={() => onChangeStatus(isVisited)}
                         >
                             <FontAwesomeIcon icon={`${this.isVisited() ? 'calendar-check' : 'calendar-plus'}`} />
                         </button>
 
                         <button className={`btn btn-primary ${this.isGoingToVisit() ? 'active' : ''}`}
                                 title="Going to visit"
-                                onClick={() => this.props.onChangeStatus('isGoingToVisit')}
+                                onClick={() => onChangeStatus(isGoingToVisit)}
                         >
                             <FontAwesomeIcon icon="bookmark" />
                         </button>
                     </div>
 
-                    <button className="btn btn-danger" title="Remove city" onClick={this.props.onRemove}>
+                    <button className="btn btn-danger" title="Remove city" onClick={onRemove}>
                         <FontAwesomeIcon icon="trash-alt" />
                     </button>
                 </td>

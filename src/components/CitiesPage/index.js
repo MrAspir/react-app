@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import CitiesList from '../../container/CitiesPage/CitiesList';
 import CitiesBar from '../../container/CitiesPage/CitiesBar';
-import CitiesModal from './CitiesModal';
+import CitiesModal from './CityModal';
 
 class CitiesPage extends Component {
     state = {
@@ -24,13 +24,13 @@ class CitiesPage extends Component {
     render() {
         return (
             <div className="cities">
-                <CitiesBar onOpen={() => this.openModal()} />
+                <CitiesBar onOpenModal={() => this.openModal()} />
                 <CitiesList />
-                <CitiesBar onOpen={() => this.openModal()} />
+                <CitiesBar onOpenModal={() => this.openModal()} />
                 <CitiesModal isOpen={this.state.isOpen} onClose={() => this.closeModal()} />
             </div>
-        )
-    }
+        );
+    };
 }
 
 export default CitiesPage;

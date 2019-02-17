@@ -5,24 +5,23 @@ import City from './City';
 
 class CitiesList extends Component {
     static propTypes = {
-        cities: PropTypes.shape({
-            list: PropTypes.arrayOf(PropTypes.shape({
-                id: PropTypes.number.isRequired,
-                name: PropTypes.string.isRequired,
-                status: PropTypes.shape({
-                    isVisited: PropTypes.bool.isRequired,
-                    isGoingToVisit: PropTypes.bool.isRequired
+        cities: PropTypes.arrayOf(PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            name: PropTypes.string.isRequired,
+            status: PropTypes.shape({
+                isVisited: PropTypes.bool.isRequired,
+                isGoingToVisit: PropTypes.bool.isRequired
+            }).isRequired,
+            weather: PropTypes.shape({
+                clouds: PropTypes.shape({
+                    all: PropTypes.number.isRequired,
+                    description: PropTypes.string.isRequired,
+                    icon: PropTypes.string.isRequired
                 }).isRequired,
-                weather: PropTypes.shape({
-                    clouds: PropTypes.shape({
-                        status: PropTypes.number.isRequired,
-                        description: PropTypes.string.isRequired,
-                        icon: PropTypes.string.isRequired
-                    }).isRequired,
-                    temp: PropTypes.number.isRequired
-                })
-            }).isRequired).isRequired
-        }).isRequired,
+                temp: PropTypes.number.isRequired
+            })
+        }).isRequired).isRequired,
+        isLoaded: PropTypes.bool.isRequired,
         onLoadWeather: PropTypes.func.isRequired,
         onChangeCityStatus: PropTypes.func.isRequired,
         onRemoveCity: PropTypes.func.isRequired
@@ -30,40 +29,70 @@ class CitiesList extends Component {
 
     state = {
         isSetColors: false,
-        listColors: {},
+        citiesTempColor: {},
         isSorted: false,
         currentSort: 'temp'
     };
 
-    isLoaded = () => this.props.cities.isLoaded;
+    isLoaded = () => this.props.isLoaded;
 
-    sortingCities = (type = this.state.currentSort) => {
-        const list = [ ...this.props.cities.list ];
+    citiesTempColor = () => {
+        const cities = [ ...this.props.cities ];
+        const temp = cities.map(city => city.weather.temp);
+        const min = Math.min(...temp);
+        const diff = Math.max(...temp) - min;
+        const step = Math.floor(240 / diff);
 
-        if (type === 'name') {
-            return list.sort((firstItem, secondItem) => {
-                return (firstItem.name > secondItem.name ? 1 :
-                    firstItem.name < secondItem.name ? -1 : 0) * [1, -1][+this.state.isSorted];
+        let citiesTempColor = {};
+
+        let h = 0;
+        let s = 100;
+        let l = 35;
+
+        for (let i = 0; i < cities.length; ++i) {
+            const city = cities[i];
+
+            h = 240 - (step * (city.weather.temp - min));
+
+            citiesTempColor[city.id] = `hsl(${h}, ${s}%, ${l}%)`;
+        }
+
+        this.setState({
+            citiesTempColor,
+            isSetColors: true
+        });
+    };
+
+    sortingCities = (sort = this.state.currentSort) => {
+        const cities = [ ...this.props.cities ];
+
+        if (sort === 'name') {
+            return cities.sort((CityA, CityB) => {
+                return (CityA.name > CityB.name
+                    ? 1 : CityA.name < CityB.name
+                        ? -1 : 0) * [1, -1][+this.state.isSorted];
             });
         }
 
-        if (type === 'temp') {
-            return list.sort((firstItem, secondItem) => {
-                return (firstItem.weather.temp > secondItem.weather.temp ? 1 :
-                    firstItem.weather.temp < secondItem.weather.temp ? -1 : 0) * [1, -1][+this.state.isSorted];
+        if (sort === 'temp') {
+            return cities.sort((CityA, CityB) => {
+                return (CityA.weather.temp > CityB.weather.temp
+                    ? 1 : CityA.weather.temp < CityB.weather.temp
+                        ? -1 : 0) * [1, -1][+this.state.isSorted];
             });
         }
 
-        if (type === 'clouds') {
-            return list.sort((firstItem, secondItem) => {
-                return (firstItem.weather.clouds.status > secondItem.weather.clouds.status ? 1 :
-                    firstItem.weather.clouds.status < secondItem.weather.clouds.status ? -1 : 0) * [1, -1][+this.state.isSorted];
+        if (sort === 'clouds') {
+            return cities.sort((CityA, CityB) => {
+                return (CityA.weather.clouds.all > CityB.weather.clouds.all
+                    ? 1 : CityA.weather.clouds.all < CityB.weather.clouds.all
+                        ? -1 : 0) * [1, -1][+this.state.isSorted];
             });
         }
     };
 
-    sort = (type) => {
-        if (type !== this.state.currentSort) {
+    setSort = (sort) => {
+        if (sort !== this.state.currentSort) {
             this.setState({
                 isSorted: false
             })
@@ -74,57 +103,54 @@ class CitiesList extends Component {
         }
 
         this.setState({
-            currentSort: type
+            currentSort: sort
         });
     };
 
-    tempColor = () => {
-        if (this.state.isSetColors) {
-            return;
+    bodyRender = () => {
+        if (!this.props.cities.length) {
+            return (
+                <tr>
+                    <td className="cities__no-cities" colSpan="5">No cities to show</td>
+                </tr>
+            )
         }
 
-        const list = [ ...this.props.cities.list ];
-        const temp = list.map(city => city.weather.temp);
-        const min = Math.min(...temp);
-        const diff = Math.max(...temp) - min;
-        const step = Math.floor(240 / diff);
+        const sortedCities = this.sortingCities();
 
-        let listColors = {};
-
-        let h = 0;
-        let s = 100;
-        let l = 35;
-
-        for (let i = 0; i < list.length; ++i) {
-            h = 240 - (step * (list[i].weather.temp - min));
-
-            listColors[list[i].id] = `hsl(${h}, ${s}%, ${l}%)`;
-        }
-
-        this.setState({
-            listColors,
-            isSetColors: true
-        });
+        return (
+            sortedCities.map((city, index) =>
+                <City
+                    key={city.id}
+                    {...city}
+                    count={index}
+                    background={this.state.citiesTempColor[city.id]}
+                    onChangeStatus={(status) => this.props.onChangeCityStatus(city.id, status)}
+                    onRemove={() => this.props.onRemoveCity(city.id)}
+                />
+            )
+        )
     };
 
     componentDidMount() {
-        this.props.onLoadWeather(this.props.cities.list);
+        this.props.onLoadWeather(this.props.cities);
     }
 
     componentWillUpdate(nextProps, nextState, nextContext) {
-        if (!nextProps.cities.isFetching && !nextProps.cities.isLoaded) {
+        if (!nextProps.isFetching && !nextProps.isLoaded) {
             nextState.isSetColors = false;
-            nextState.listColors = {};
+            nextState.citiesTempColor = {};
             nextState.isSorted = false;
             nextState.currentSort = 'temp';
 
-            nextProps.onLoadWeather(nextProps.cities.list);
+            nextProps.onLoadWeather(nextProps.cities);
         }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.cities.isLoaded && !this.state.isSetColors) {
-            this.tempColor();
+        if ((this.props.isLoaded && !this.state.isSetColors) ||
+            (this.state.isSetColors && prevProps.cities.length !== this.props.cities.length)) {
+            this.citiesTempColor();
         }
     }
 
@@ -137,15 +163,15 @@ class CitiesList extends Component {
                             <th className="cities__count">#</th>
 
                             <th className="cities__name">
-                                <button className="btn btn-link" onClick={() => this.sort('name')}>City</button>
+                                <button className="btn btn-link" onClick={() => this.setSort('name')}>City</button>
                             </th>
 
                             <th className="cities__clouds">
-                                <button className="btn btn-link" onClick={() => this.sort('clouds')}>Clouds</button>
+                                <button className="btn btn-link" onClick={() => this.setSort('clouds')}>Clouds</button>
                             </th>
 
                             <th className="cities__temp">
-                                <button className="btn btn-link" onClick={() => this.sort('temp')}>Temperature</button>
+                                <button className="btn btn-link" onClick={() => this.setSort('temp')}>Temperature</button>
                             </th>
 
                             <th className="cities__action">Actions</th>
@@ -153,16 +179,7 @@ class CitiesList extends Component {
                     </thead>
 
                     <tbody>
-                        {this.isLoaded() && this.sortingCities().map((city, index) =>
-                            <City
-                                key={city.id}
-                                {...city}
-                                count={index}
-                                background={this.state.listColors[city.id]}
-                                onChangeStatus={(status) => this.props.onChangeCityStatus(city.id, status)}
-                                onRemove={() => this.props.onRemoveCity(city.id)}
-                            />
-                        )}
+                        {this.isLoaded() && this.bodyRender()}
                     </tbody>
                 </table>
             </div>

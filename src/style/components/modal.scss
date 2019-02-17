@@ -1,0 +1,56 @@
+.modal {
+    &__header {
+        position: relative;
+    }
+
+    &__close {
+        @extend .btn;
+
+        position: absolute;
+        top: -20px;
+        right: -20px;
+        padding: 0;
+        width: 40px;
+        height: 40px;
+        outline: none;
+        border: none;
+        background: none;
+
+        &:hover,
+        &:active {
+            color: $red;
+        }
+
+        &:focus {
+            box-shadow: none;
+        }
+    }
+
+    &__content {
+        .searching,
+        .not-found {
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .searching {
+            color: $gray-400;
+
+            .svg-inline--fa {
+                width: 2em;
+                height: 2em;
+                animation: fa-spin 2s infinite linear;
+            }
+        }
+
+        .not-found {
+            color: $gray-600;
+        }
+
+        .btn .svg-inline--fa {
+            margin-right: 10px;
+        }
+    }
+}

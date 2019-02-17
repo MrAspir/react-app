@@ -4,12 +4,6 @@ import CitiesBar from '../../components/CitiesPage/CitiesBar';
 
 import { refreshData } from '../../store/actions/CitiesPage/CitiesBar';
 
-const mapStateToProps = state => ({
-
-});
-
-const mapDispatchToProps = dispatch => ({
+export default connect(undefined, dispatch => ({
     onRefreshData: () => dispatch(refreshData())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(CitiesBar);
+}))(CitiesBar);

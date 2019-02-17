@@ -1,23 +1,29 @@
 import Immutable from 'seamless-immutable';
 
-import { CITY_REMOVE, WEATHER_REQUEST, WEATHER_RECEIVE, DATA_REFRESH,
-    CHANGE_STATUS } from '../actions/CitiesPage/types';
+import LocalStorage from '../../service/LocalStorage';
 
-import { loadState } from '../../service/localStorage';
+import { isVisited, isGoingToVisit } from '../../store/actions/CitiesPage/status';
+
+import { CITY_ADD, CITY_REMOVE, WEATHER_REQUEST, WEATHER_RECEIVE, DATA_REFRESH, CHANGE_STATUS, LIVE_SEARCH_REQUEST,
+    LIVE_SEARCH_RECEIVE, LIVE_SEARCH_REMOVE } from '../actions/CitiesPage/types';
 
 import config from '../../config';
+
+const { openWeatherMap } = config;
 
 const initialState = Immutable({
     isFetching: false,
     isLoaded: false,
+    isSearching: false,
+    isFound: false,
     list: [
         {
             id: 3183875,
             name: 'Tirana',
             country: 'AL',
             status: {
-                isVisited: false,
-                isGoingToVisit: false
+                [isVisited]: false,
+                [isGoingToVisit]: false
             }
         },
         {
@@ -25,8 +31,8 @@ const initialState = Immutable({
             name: 'Andorra la Vella',
             country: 'AD',
             status: {
-                isVisited: false,
-                isGoingToVisit: false
+                [isVisited]: false,
+                [isGoingToVisit]: false
             }
         },
         {
@@ -34,8 +40,8 @@ const initialState = Immutable({
             name: 'Yerevan',
             country: 'AM',
             status: {
-                isVisited: false,
-                isGoingToVisit: false
+                [isVisited]: false,
+                [isGoingToVisit]: false
             }
         },
         {
@@ -43,8 +49,8 @@ const initialState = Immutable({
             name: 'Vienna',
             country: 'AT',
             status: {
-                isVisited: false,
-                isGoingToVisit: false
+                [isVisited]: false,
+                [isGoingToVisit]: false
             }
         },
         {
@@ -52,8 +58,8 @@ const initialState = Immutable({
             name: 'Baku',
             country: 'AZ',
             status: {
-                isVisited: false,
-                isGoingToVisit: false
+                [isVisited]: false,
+                [isGoingToVisit]: false
             }
         },
         {
@@ -61,8 +67,8 @@ const initialState = Immutable({
             name: 'Minsk',
             country: 'BY',
             status: {
-                isVisited: false,
-                isGoingToVisit: false
+                [isVisited]: false,
+                [isGoingToVisit]: false
             }
         },
         {
@@ -70,8 +76,8 @@ const initialState = Immutable({
             name: 'Brussels',
             country: 'BE',
             status: {
-                isVisited: false,
-                isGoingToVisit: false
+                [isVisited]: false,
+                [isGoingToVisit]: false
             }
         },
         {
@@ -79,8 +85,8 @@ const initialState = Immutable({
             name: 'Sarajevo',
             country: 'BA',
             status: {
-                isVisited: false,
-                isGoingToVisit: false
+                [isVisited]: false,
+                [isGoingToVisit]: false
             }
         },
         {
@@ -88,8 +94,8 @@ const initialState = Immutable({
             name: 'Sofia',
             country: 'BG',
             status: {
-                isVisited: false,
-                isGoingToVisit: false
+                [isVisited]: false,
+                [isGoingToVisit]: false
             }
         },
         {
@@ -97,8 +103,8 @@ const initialState = Immutable({
             name: 'Zagreb',
             country: 'HR',
             status: {
-                isVisited: false,
-                isGoingToVisit: false
+                [isVisited]: false,
+                [isGoingToVisit]: false
             }
         },
         {
@@ -106,8 +112,8 @@ const initialState = Immutable({
             name: 'Nicosia',
             country: 'CY',
             status: {
-                isVisited: false,
-                isGoingToVisit: false
+                [isVisited]: false,
+                [isGoingToVisit]: false
             }
         },
         {
@@ -115,8 +121,8 @@ const initialState = Immutable({
             name: 'Prague',
             country: 'CZ',
             status: {
-                isVisited: false,
-                isGoingToVisit: false
+                [isVisited]: false,
+                [isGoingToVisit]: false
             }
         },
         {
@@ -124,8 +130,8 @@ const initialState = Immutable({
             name: 'Copenhagen',
             country: 'DK',
             status: {
-                isVisited: false,
-                isGoingToVisit: false
+                [isVisited]: false,
+                [isGoingToVisit]: false
             }
         },
         {
@@ -133,8 +139,8 @@ const initialState = Immutable({
             name: 'Tallinn',
             country: 'EE',
             status: {
-                isVisited: false,
-                isGoingToVisit: false
+                [isVisited]: false,
+                [isGoingToVisit]: false
             }
         },
         {
@@ -142,8 +148,8 @@ const initialState = Immutable({
             name: 'Helsinki',
             country: 'FI',
             status: {
-                isVisited: false,
-                isGoingToVisit: false
+                [isVisited]: false,
+                [isGoingToVisit]: false
             }
         },
         {
@@ -151,8 +157,8 @@ const initialState = Immutable({
             name: 'Paris',
             country: 'FR',
             status: {
-                isVisited: false,
-                isGoingToVisit: false
+                [isVisited]: false,
+                [isGoingToVisit]: false
             }
         },
         {
@@ -160,8 +166,8 @@ const initialState = Immutable({
             name: 'Tbilisi',
             country: 'GE',
             status: {
-                isVisited: false,
-                isGoingToVisit: false
+                [isVisited]: false,
+                [isGoingToVisit]: false
             }
         },
         {
@@ -169,8 +175,8 @@ const initialState = Immutable({
             name: 'Berlin',
             country: 'DE',
             status: {
-                isVisited: false,
-                isGoingToVisit: false
+                [isVisited]: false,
+                [isGoingToVisit]: false
             }
         },
         {
@@ -178,8 +184,8 @@ const initialState = Immutable({
             name: 'Athens',
             country: 'GR',
             status: {
-                isVisited: false,
-                isGoingToVisit: false
+                [isVisited]: false,
+                [isGoingToVisit]: false
             }
         },
         {
@@ -187,25 +193,21 @@ const initialState = Immutable({
             name: 'Budapest',
             country: 'HU',
             status: {
-                isVisited: false,
-                isGoingToVisit: false
+                [isVisited]: false,
+                [isGoingToVisit]: false
             }
         }
-    ]
+    ],
+    search: {}
 });
 
-const appCities = (
-    state = {
-        ...initialState,
-        list: loadState('cityList') || initialState.list
-    },
-    action
-) => {
+const appWeather = (state, action) => {
     switch (action.type) {
         case WEATHER_REQUEST:
             return {
                 ...state,
-                isFetching: true
+                isFetching: true,
+                isLoaded: false
             };
         case WEATHER_RECEIVE:
             return {
@@ -229,41 +231,151 @@ const appCities = (
                         }
                     }
 
+                    const { main: { temp }, clouds: { all }, weather: { 0: { description, icon } } } = item;
+
                     return {
                         ...city,
                         weather: {
+                            temp,
                             clouds: {
-                                status: item.clouds.all,
-                                description: item.weather[0].description,
-                                icon: `${config.openWeatherMap.icon}/${item.weather[0].icon}.png`
-                            },
-                            temp: item.main.temp
+                                all,
+                                description,
+                                icon: `${openWeatherMap.icon}/${icon}.png`
+                            }
                         }
                     }
                 })
             };
+        default:
+            return state;
+    }
+};
+
+const appLiveSearch = (state, action) => {
+    switch (action.type) {
+        case LIVE_SEARCH_REQUEST:
+            return {
+                ...state,
+                isSearching: true,
+                isFound: false
+            };
+        case LIVE_SEARCH_RECEIVE:
+            const { response } = action;
+
+            if (!response) {
+                return {
+                    ...state,
+                    isSearching: false,
+                    isFound: true,
+                    search: {}
+                }
+            }
+
+            const {
+                id,
+                name,
+                sys: { country },
+                coord: { lat, lon },
+                main: { temp },
+                clouds: { all },
+                weather: { 0: { description, icon } }
+            } = response;
+
+            return {
+                ...state,
+                isSearching: false,
+                isFound: true,
+                search: {
+                    id,
+                    name,
+                    country,
+                    flag: `${openWeatherMap.flag}/${country.toLowerCase()}.png`,
+                    coord: { lat, lon },
+                    weather: {
+                        temp,
+                        clouds: {
+                            all,
+                            description,
+                            icon: `${openWeatherMap.icon}/${icon}.png`
+                        }
+                    }
+                }
+            };
+        case LIVE_SEARCH_REMOVE:
+            return {
+                ...state,
+                isSearching: false,
+                isFound: false,
+                search: {}
+            };
+        default:
+            return state;
+    }
+};
+
+const appCities = (
+    state = {
+        ...initialState,
+        list: LocalStorage.load('cityList') || initialState.list
+    },
+    action
+) => {
+    switch (action.type) {
         case CHANGE_STATUS:
             return {
                 ...state,
-                list: state.list.map(city => {
-                    if (city.id === action.id) {
-                        return {
-                            ...city,
-                            status: {
-                                ...city.status,
-                                [action.status]: !city.status[action.status]
+                list: state.list.map(city => city.id === action.id ? {
+                    ...city,
+                    status: {
+                        ...city.status,
+                        [action.status]: !city.status[action.status]
+                    }
+                } : city)
+            };
+        case CITY_ADD:
+            if (state.list.find(city => city.id === action.city.id)) {
+                return {
+                    ...state
+                }
+            }
+
+            const { id, name, country, weather: { temp, clouds: { all, description, icon } } } = action.city;
+
+            return {
+                ...state,
+                list: [
+                    ...state.list,
+                    {
+                        id,
+                        name,
+                        country,
+                        status: {
+                            isVisited: false,
+                            isGoingToVisit: false
+                        },
+                        weather: {
+                            temp,
+                            clouds: {
+                                all,
+                                description,
+                                icon
                             }
                         }
                     }
-
-                    return city;
-                })
+                ]
             };
         case CITY_REMOVE:
             return {
                 ...state,
                 list: state.list.filter(city => city.id !== action.id)
             };
+        case WEATHER_REQUEST:
+        case WEATHER_RECEIVE:
+            return appWeather(state, action);
+        case LIVE_SEARCH_REQUEST:
+        case LIVE_SEARCH_RECEIVE:
+        case LIVE_SEARCH_REMOVE:
+            return appLiveSearch(state, action);
         default:
             return state;
     }
