@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { removeCity, getWeather, changeCityStatus } from '../../store/actions/CitiesPage/CitiesList';
+import { cityRemove, cityStatus, getWeather } from '../../store/actions/CitiesPage/CitiesList';
 
 import CitiesList from '../../components/CitiesPage/CitiesList';
 
@@ -9,6 +9,6 @@ export default connect(state => ({
     cities: state.cities.list
 }), dispatch => ({
     onLoadWeather: data => dispatch(getWeather(data)),
-    onChangeCityStatus: (id, status) => dispatch(changeCityStatus(id, status)),
-    onRemoveCity: id => dispatch(removeCity(id))
+    onRemoveCity: id => dispatch(cityRemove(id)),
+    onChangeCityStatus: (id, status) => dispatch(cityStatus(id, status)),
 }))(CitiesList);

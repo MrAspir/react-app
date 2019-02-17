@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class CityForm extends Component {
     static propTypes = {
+        isFound: PropTypes.bool.isRequired,
+        isSearching: PropTypes.bool.isRequired,
         city: PropTypes.shape({
             name: PropTypes.string,
             country: PropTypes.string,
@@ -22,11 +24,10 @@ class CityForm extends Component {
                 lon: PropTypes.number
             })
         }).isRequired,
-        isFound: PropTypes.bool.isRequired,
-        isSearching: PropTypes.bool.isRequired,
         onModalClose: PropTypes.func.isRequired,
-        onLiveSearch: PropTypes.func.isRequired,
-        onRemoveLiveSearch: PropTypes.func.isRequired
+        onSearch: PropTypes.func.isRequired,
+        onClearSearch: PropTypes.func.isRequired,
+        onAddCity: PropTypes.func.isRequired
     };
 
     constructor (props) {
@@ -51,7 +52,7 @@ class CityForm extends Component {
     };
 
     searching = () => {
-        this.props.onLiveSearch(this.state.name);
+        this.props.onSearch(this.state.name);
     };
 
     adding = (event) => {
@@ -97,7 +98,7 @@ class CityForm extends Component {
         }
 
         if (nextState.name.length <= 1 && nextProps.isFound) {
-            this.props.onRemoveLiveSearch();
+            this.props.onClearSearch();
         }
     }
 

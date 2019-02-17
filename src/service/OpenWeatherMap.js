@@ -2,17 +2,17 @@ import axios from 'axios';
 
 import config from '../config';
 
-const params  = {
+const { openWeatherMap: { host } } = config;
+
+const options  = {
     units: 'metric',
     appid: config.openWeatherMap.apiKey
 };
 
-const { openWeatherMap: { host } } = config;
-
 class OpenWeatherMap {
-    async axios (route, options) {
+    async axios (route, params) {
         try {
-            const response = await axios.get(host + route + this.setParams(options));
+            const response = await axios.get(host + route + this.setParams(params));
 
             return response.data;
         } catch (err) {
@@ -20,13 +20,13 @@ class OpenWeatherMap {
         }
     }
 
-    setParams (options) {
-        return `?${Object.entries({ ...options, ...params })
+    setParams (params) {
+        return `?${Object.entries({ ...params, ...options })
             .map(([key, value]) => `${key}=${value}`)
             .join('&')}`;
     }
 
-    async getAllWeather (data) {
+    async getAll (data) {
         const chunk = 20;
 
         let response = [];
@@ -49,7 +49,7 @@ class OpenWeatherMap {
         return response;
     }
 
-    async getWeather (cityName) {
+    async getOne (cityName) {
         return await this.axios('/weather', {
             q: cityName
         });

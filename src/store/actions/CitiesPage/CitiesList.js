@@ -1,34 +1,34 @@
-import { CITY_REMOVE, WEATHER_REQUEST, WEATHER_RECEIVE, CHANGE_STATUS } from './types';
+import { CITY_REMOVE, CITY_STATUS, WEATHER_REQUEST, WEATHER_RECEIVE } from './types';
 
 import OpenWeatherMap from '../../../service/OpenWeatherMap';
 
-const requestWeather = () => ({
+const weatherRequest = () => ({
     type: WEATHER_REQUEST
 });
 
-const receiveWeather = list => ({
+const weatherReceive = list => ({
     type: WEATHER_RECEIVE,
     list
 });
 
-const changeCityStatus = (id, status) => ({
-    type: CHANGE_STATUS,
+const cityStatus = (id, status) => ({
+    type: CITY_STATUS,
     id,
     status
 });
 
-const removeCity = id => ({
+const cityRemove = id => ({
     type: CITY_REMOVE,
     id
 });
 
 const getWeather = data => async dispatch => {
-    dispatch(requestWeather());
-    dispatch(receiveWeather(await OpenWeatherMap.getAllWeather(data)));
+    dispatch(weatherRequest());
+    dispatch(weatherReceive(await OpenWeatherMap.getAll(data)));
 };
 
 export {
-    getWeather,
-    changeCityStatus,
-    removeCity
+    cityStatus,
+    cityRemove,
+    getWeather
 }

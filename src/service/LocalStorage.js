@@ -11,7 +11,7 @@ class LocalStorage {
         } catch (err) {
             return undefined;
         }
-    };
+    }
 
     save (key, state) {
         try {
@@ -19,7 +19,7 @@ class LocalStorage {
         } catch (err) {
             // Die
         }
-    };
+    }
 }
 
 export default new LocalStorage();

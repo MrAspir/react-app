@@ -1,18 +1,18 @@
-import { CITY_ADD, LIVE_SEARCH_REQUEST, LIVE_SEARCH_RECEIVE, LIVE_SEARCH_REMOVE } from './types';
+import { CITY_ADD, SEARCH_REQUEST, SEARCH_RECEIVE, SEARCH_CLEAR } from './types';
 
 import OpenWeatherMap from '../../../service/OpenWeatherMap';
 
-const liveSearchRequest = () => ({
-    type: LIVE_SEARCH_REQUEST
+const searchRequest = () => ({
+    type: SEARCH_REQUEST
 });
 
-const liveSearchReceive = response => ({
-    type: LIVE_SEARCH_RECEIVE,
+const searchReceive = response => ({
+    type: SEARCH_RECEIVE,
     response
 });
 
-const liveSearchRemove = () => ({
-    type: LIVE_SEARCH_REMOVE
+const searchClear = () => ({
+    type: SEARCH_CLEAR
 });
 
 const cityAdd = (city) => ({
@@ -20,18 +20,18 @@ const cityAdd = (city) => ({
     city
 });
 
-const liveSearch = name => async dispatch => {
-    dispatch(liveSearchRequest());
-    dispatch(liveSearchReceive(await OpenWeatherMap.getWeather(name)));
+const search = name => async dispatch => {
+    dispatch(searchRequest());
+    dispatch(searchReceive(await OpenWeatherMap.getOne(name)));
 };
 
 const addCity = (city) => async dispatch => {
     dispatch(await cityAdd(city));
-    dispatch(liveSearchRemove());
+    dispatch(searchClear());
 };
 
 export {
-    liveSearch,
-    liveSearchRemove,
+    search,
+    searchClear,
     addCity
 }

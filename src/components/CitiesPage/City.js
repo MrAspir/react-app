@@ -45,23 +45,17 @@ class City extends Component {
                     <span className="cities__clouds-value">{description}</span>
                 </td>
 
-                <td className="cities__temp" style={{ background: background }}>
-                    {temp}
-                </td>
+                <td className="cities__temp" style={{ background: background }}> {temp} </td>
 
                 <td className="cities__action">
                     <div className="btn-group btn-group-toggle" role="group">
-                        <button className={`btn btn-primary ${this.isVisited() ? 'active' : ''}`}
-                               title="Visited city"
-                               onClick={() => onChangeStatus(isVisited)}
-                        >
+                        <button className={`btn btn-primary ${this.isVisited() ? 'active' : ''}`} title="Visited city"
+                               onClick={() => onChangeStatus(isVisited)} >
                             <FontAwesomeIcon icon={`${this.isVisited() ? 'calendar-check' : 'calendar-plus'}`} />
                         </button>
 
                         <button className={`btn btn-primary ${this.isGoingToVisit() ? 'active' : ''}`}
-                                title="Going to visit"
-                                onClick={() => onChangeStatus(isGoingToVisit)}
-                        >
+                                title="Going to visit" onClick={() => onChangeStatus(isGoingToVisit)} >
                             <FontAwesomeIcon icon="bookmark" />
                         </button>
                     </div>

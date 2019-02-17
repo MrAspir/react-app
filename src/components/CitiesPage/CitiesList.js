@@ -5,6 +5,7 @@ import City from './City';
 
 class CitiesList extends Component {
     static propTypes = {
+        isLoaded: PropTypes.bool.isRequired,
         cities: PropTypes.arrayOf(PropTypes.shape({
             id: PropTypes.number.isRequired,
             name: PropTypes.string.isRequired,
@@ -21,7 +22,6 @@ class CitiesList extends Component {
                 temp: PropTypes.number.isRequired
             })
         }).isRequired).isRequired,
-        isLoaded: PropTypes.bool.isRequired,
         onLoadWeather: PropTypes.func.isRequired,
         onChangeCityStatus: PropTypes.func.isRequired,
         onRemoveCity: PropTypes.func.isRequired
@@ -117,6 +117,7 @@ class CitiesList extends Component {
         }
 
         const sortedCities = this.sortingCities();
+        const { onChangeCityStatus, onRemoveCity } = this.props;
 
         return (
             sortedCities.map((city, index) =>
@@ -125,8 +126,8 @@ class CitiesList extends Component {
                     {...city}
                     count={index}
                     background={this.state.citiesTempColor[city.id]}
-                    onChangeStatus={(status) => this.props.onChangeCityStatus(city.id, status)}
-                    onRemove={() => this.props.onRemoveCity(city.id)}
+                    onChangeStatus={(status) => onChangeCityStatus(city.id, status)}
+                    onRemove={() => onRemoveCity(city.id)}
                 />
             )
         )
@@ -137,19 +138,24 @@ class CitiesList extends Component {
     }
 
     componentWillUpdate(nextProps, nextState, nextContext) {
-        if (!nextProps.isFetching && !nextProps.isLoaded) {
+        const { isFetching, isLoaded, onLoadWeather } = nextProps;
+
+        if (!isFetching && !isLoaded) {
             nextState.isSetColors = false;
             nextState.citiesTempColor = {};
             nextState.isSorted = false;
             nextState.currentSort = 'temp';
 
-            nextProps.onLoadWeather(nextProps.cities);
+            onLoadWeather(nextProps.cities);
         }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if ((this.props.isLoaded && !this.state.isSetColors) ||
-            (this.state.isSetColors && prevProps.cities.length !== this.props.cities.length)) {
+        const { isLoaded, cities } = this.props;
+        const { isSetColors } = this.state;
+
+        if ((isLoaded && !isSetColors) ||
+            (isSetColors && prevProps.cities.length !== cities.length)) {
             this.citiesTempColor();
         }
     }

@@ -27,14 +27,11 @@ const CitiesModal = ({ isOpen, onClose }) => {
 
     return (
         <div>
-            <Modal
-                isOpen={isOpen}
-                onRequestClose={onClose}
-                style={customStyles}
-                contentLabel="Modal window for adding a new city"
-            >
+            <Modal isOpen={isOpen} onRequestClose={onClose} style={customStyles}
+                   contentLabel="Modal window for adding a new city">
                 <div className="modal__header">
                     <h2>Adding a new city</h2>
+
                     <button className="modal__close" onClick={onClose}>
                         <FontAwesomeIcon icon="times" />
                     </button>

@@ -4,8 +4,8 @@ import LocalStorage from '../../service/LocalStorage';
 
 import { isVisited, isGoingToVisit } from '../../store/actions/CitiesPage/status';
 
-import { CITY_ADD, CITY_REMOVE, WEATHER_REQUEST, WEATHER_RECEIVE, DATA_REFRESH, CHANGE_STATUS, LIVE_SEARCH_REQUEST,
-    LIVE_SEARCH_RECEIVE, LIVE_SEARCH_REMOVE } from '../actions/CitiesPage/types';
+import { CITY_ADD, CITY_REMOVE, CITY_STATUS, WEATHER_REQUEST, WEATHER_RECEIVE, SEARCH_REQUEST, SEARCH_RECEIVE,
+    SEARCH_CLEAR, DATA_REFRESH } from '../actions/CitiesPage/types';
 
 import config from '../../config';
 
@@ -251,15 +251,15 @@ const appWeather = (state, action) => {
     }
 };
 
-const appLiveSearch = (state, action) => {
+const appSearch = (state, action) => {
     switch (action.type) {
-        case LIVE_SEARCH_REQUEST:
+        case SEARCH_REQUEST:
             return {
                 ...state,
                 isSearching: true,
                 isFound: false
             };
-        case LIVE_SEARCH_RECEIVE:
+        case SEARCH_RECEIVE:
             const { response } = action;
 
             if (!response) {
@@ -301,7 +301,7 @@ const appLiveSearch = (state, action) => {
                     }
                 }
             };
-        case LIVE_SEARCH_REMOVE:
+        case SEARCH_CLEAR:
             return {
                 ...state,
                 isSearching: false,
@@ -313,25 +313,8 @@ const appLiveSearch = (state, action) => {
     }
 };
 
-const appCities = (
-    state = {
-        ...initialState,
-        list: LocalStorage.load('cityList') || initialState.list
-    },
-    action
-) => {
+const appCities = (state, action) => {
     switch (action.type) {
-        case CHANGE_STATUS:
-            return {
-                ...state,
-                list: state.list.map(city => city.id === action.id ? {
-                    ...city,
-                    status: {
-                        ...city.status,
-                        [action.status]: !city.status[action.status]
-                    }
-                } : city)
-            };
         case CITY_ADD:
             if (state.list.find(city => city.id === action.city.id)) {
                 return {
@@ -350,8 +333,8 @@ const appCities = (
                         name,
                         country,
                         status: {
-                            isVisited: false,
-                            isGoingToVisit: false
+                            [isVisited]: false,
+                            [isGoingToVisit]: false
                         },
                         weather: {
                             temp,
@@ -369,13 +352,38 @@ const appCities = (
                 ...state,
                 list: state.list.filter(city => city.id !== action.id)
             };
+        case CITY_STATUS:
+            return {
+                ...state,
+                list: state.list.map(city => city.id === action.id ? {
+                    ...city,
+                    status: {
+                        ...city.status,
+                        [action.status]: !city.status[action.status]
+                    }
+                } : city)
+            };
+        default:
+            return state;
+    }
+};
+
+const initCities = (state = {
+    ...initialState,
+    list: LocalStorage.load('cityList') || initialState.list
+}, action) => {
+    switch (action.type) {
+        case CITY_ADD:
+        case CITY_REMOVE:
+        case CITY_STATUS:
+            return appCities(state, action);
         case WEATHER_REQUEST:
         case WEATHER_RECEIVE:
             return appWeather(state, action);
-        case LIVE_SEARCH_REQUEST:
-        case LIVE_SEARCH_RECEIVE:
-        case LIVE_SEARCH_REMOVE:
-            return appLiveSearch(state, action);
+        case SEARCH_REQUEST:
+        case SEARCH_RECEIVE:
+        case SEARCH_CLEAR:
+            return appSearch(state, action);
         default:
             return state;
     }
@@ -386,9 +394,9 @@ const cities = (state, action) => {
         case DATA_REFRESH:
             localStorage.removeItem('cityList');
 
-            return appCities(undefined, action);
+            return initCities(undefined, action);
         default:
-            return appCities(state, action);
+            return initCities(state, action);
     }
 };
 
