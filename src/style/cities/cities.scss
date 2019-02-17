@@ -124,8 +124,16 @@
             padding-top: 20px;
         }
 
+        .btn::after {
+            @include media-breakpoint-up(md) {
+                content: attr(data-text);
+            }
+        }
+
         .svg-inline--fa {
-            margin-right: 10px;
+            @include media-breakpoint-up(md) {
+                margin-right: 10px;
+            }
         }
     }
 }
